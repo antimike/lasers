@@ -1,0 +1,322 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage[makeroom]{cancel}
+\usepackage{physics}
+\usepackage{braket}
+\usepackage{bbold}
+\usepackage{tensor}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{mdframed}
+\usepackage{xparse}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[inline]{enumitem}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage[cal=boondox]{mathalfa}
+
+\geometry{lmargin=.75in, rmargin=.75in}
+
+%% For sample text
+\usepackage{lipsum}
+
+%% Resource-intensive packages
+%\usepackage{chemformula}
+\usepackage{siunitx}
+%\usepackage[backend=bibtex,style=phys]{biblatex}
+
+%\setlength{\textwidth}{\paperwidth}
+%\addtolength{\textwidth}{-2in}
+%\calclayout
+
+%%Layout environments and macros
+\makeatletter
+\newcounter{problem}
+\newcounter{problempart}
+\newcounter{problemstart}
+\setcounter{problem}{0}
+\setcounter{problemstart}{1}
+\newcommand{\theheadertitle}{}
+\newcommand{\theproblemtitle}{}
+\newcommand{\theproblemsubtitle}{}
+\newcommand{\theproblemformattedtitle}{}
+\newcommand{\theproblempartformattedname}{}
+\newcommand{\theproblempartname}{}
+\newcommand{\theproblemheadertext}{}
+\newcommand{\theproblempage}{\the\numexpr\thepage-\theproblemstart+1\relax}
+
+\NewDocumentEnvironment{problem}{ o o }%
+{
+	\refstepcounter{problem}
+	\setcounter{problemstart}{\thepage}
+	\setcounter{problempart}{0}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblemtitle}{Problem \theproblem}}
+		{\renewcommand{\theproblemtitle}{#1}}	
+	\IfNoValueTF{#2}%
+		{%
+			\renewcommand{\theproblemsubtitle}{}
+			\renewcommand{\theproblemformattedtitle}{\textbf{\theproblemtitle}}%
+		}%
+		{%
+			\renewcommand{\theproblemsubtitle}{#2}
+			\renewcommand{\theproblemformattedtitle}{\textbf{\theproblemtitle} (\theproblemsubtitle)}%
+		}	
+	\renewcommand{\theproblemheadertext}{\theproblemtitle \, -- \, \theproblempage}
+	\protected@edef\@currentlabelname{\theproblemtitle}
+	\noindent \hrule height .5pt width \textwidth
+	\vskip .75em
+	\begin{center}
+		\large{\theproblemformattedtitle}
+	\end{center}
+	\noindent \hrule height .5pt width \textwidth
+	\vskip .75em
+}{	\newpage }
+
+\NewDocumentEnvironment{problemstatement}{ O{Problem Statement} O{\itshape} O{lightgray} }%
+{
+	\begin{mdframed}[backgroundcolor=#3, frametitle={#1}]#2
+}{	\end{mdframed}}
+
+\NewDocumentEnvironment{problempart}{ o tp tb }%
+{
+	\refstepcounter{problempart}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblempartname}{\alph{\theproblempart}}	}%
+		{\renewcommand{\theproblempartname}{#1}	}
+	\IfBooleanTF{#2}
+		{\renewcommand{\theproblempartformattedname}{\textbf{(\theproblempartname)}}}
+		{\renewcommand{\theproblempartformattedname}{\textbf{\theproblempartname}}	}%
+	\IfBooleanTF{#3}
+		{\renewcommand{\theproblempartformattedname}{\fbox{(\theproblempartformattedname)}	}}%
+		{ }
+	\theproblempartformattedname
+}{}
+\providecommand{\problempartautorefname}{Part}
+
+\NewDocumentEnvironment{problempartsimple}{ o }
+{
+	\refstepcounter{problempart}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblempartname}{(\alph{problempart})}	}%
+		{\renewcommand{\theproblempartname}{#1}	}
+	\renewcommand{\theproblempartformattedname}{\fbox{\large{\textbf{\theproblempartname}}}}
+	\vspace{1em}
+	\theproblempartformattedname \quad
+}
+
+\NewDocumentEnvironment{problempartsimple*}{ o }
+{
+	\refstepcounter{problempart}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblempartname}{(\alph{\theproblempart})}	}%
+		{\renewcommand{\theproblempartname}{#1}	}
+	\renewcommand{\theproblempartformattedname}{\large{\textbf{\theproblempartname}}}
+	\theproblempartformattedname \quad
+}
+\makeatother
+
+\newcommand{\headertitle}[1]{\renewcommand{\theheadertitle}{#1}}
+\numberwithin{equation}{problem}
+
+\pretitle{% add some rules
+  \begin{center}
+    \Large\bfseries
+}
+\posttitle{%
+  \end{center}%
+%  \noindent\vrule height 2.5pt width \textwidth
+}
+\preauthor{%
+  \begin{center}
+  \begin{tabular}[t]{@{}l@{}}%
+}
+\postauthor{%
+    \end{tabular}
+    \vskip -.5em
+    \par
+  \end{center}%
+}
+\predate{%
+  \begin{center}
+}
+\postdate{%
+  \end{center}%
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhf[lf]{\thedate{}}
+\fancyhf[rf]{\thepage}
+\fancyhf[lh]{\theheadertitle}
+\fancyhf[ch]{\theproblemheadertext}
+\fancyhf[rh]{\theauthor}
+\setlength{\footskip}{30pt}
+\renewcommand{\footrulewidth}{.4pt}
+\renewcommand{\footrule}{\hrule height \footrulewidth width \textwidth}
+
+%% Referencing and layout macros
+\newcommand{\eqnref}[1]{(\ref{#1})}
+\newcommand{\eqnremark}[1]{\textnormal{(#1)}}
+\newcommand{\nn}{\nonumber \\}
+
+%% Spacing / text style macros
+\newcommand{\tallphantom}{\phantom{\left( \int \dfrac{p_i^2}{2m} \right)}}
+\newcommand{\tx}[1]{\textnormal{#1}}
+\newcommand{\lqq}[1]{\quad \textnormal{#1}}
+\newcommand{\byeqnqq}[1]{\qquad \tx{(by } \eqnref{#1} \tx{)}}
+\newcommand{\byeqn}[1]{\tx{(by } \eqnref{#1} \tx{)}}
+\newcommand{\spacedimplies}{\Longrightarrow \quad}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eff}{\mathcal{f}}
+
+%% Physics macros
+\newcommand{\cvec}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\dprime}{\prime \prime}
+\newcommand{\til}[1]{\widetilde{#1}}
+
+%% Theorem environments
+\newtheorem{theorem}{Theorem}[problem]
+\providecommand{\theoremautorefname}{Theorem}
+\newtheorem{proposition}{Proposition}[problem]
+\providecommand{\propositionautorefname}{Proposition}
+\newtheorem{corollary}{Corollary}[proposition]
+\providecommand{\corollaryautorefname}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[problem]
+\providecommand{\definitionautorefname}{Definition}
+\newtheorem{example}{Example}[problem]
+\providecommand{\exampleautorefname}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[problem]
+\providecommand{\remarkautorefname}{Remark}
+\newtheorem*{note}{Note}
+
+\providecommand{\includegraphicsautorefname}{Figure}
+\providecommand{\figureautorefname}{Figure}
+
+\providecommand{\problemautorefname}{Problem}
+\providecommand{\problempartsimpleautorefname}{Part}
+%\providecommand{\problempartsimple*autorefname}{Part}
+
+
+\begin{document}
+\author{Michael Haynes}
+\title{Lasers: Assignment 4}
+\headertitle{HW 4}
+\date{06/02/2020}
+\titlepage
+\maketitle
+
+\newpage
+\begin{problem}[Problem 1][Nagourney 3.1] \label{3.1}
+
+\begin{problemstatement}
+A cavity is excited by a $\SI{500}{nm}$ mode-matched laser and has resonances whose separation is $\SI{125}{MHz}$ and whose width is $\SI{2.5}{MHz}$.  Determine the following:
+\begin{enumerate}[label=(\alph*)]
+	\item The cavity length $\ell$;
+	\item The cavity finesse $\mathcal{F}$;
+	\item The $Q$-factor;
+	\item The photon lifetime $t_s$.
+\end{enumerate}
+
+\end{problemstatement}
+
+\begin{problempartsimple}[(a)]
+Let $\eff$ denote the free spectral range.  If $\ell$ is the round-trip cavity length (as opposed to the physical separation between the mirrors), then $\ds \eff = c / \ell$, so
+\begin{align*}
+\ell &= \frac{c}{\eff} \\
+&= \frac{\SI{3e8}{m/s}}{\SI{125}{MHz}} \\
+&\approx \SI{2.4}{m} \tx{.}
+\end{align*}
+\end{problempartsimple}
+
+\begin{problempartsimple}[(b)]
+The finesse is given by
+\[
+\mathcal{F} = \frac{\eff}{\Delta \nu_{1/2}} = \frac{\SI{125}{MHz}}{\SI{2.5}{MHz}} \approx 50 \tx{.}
+\]
+\end{problempartsimple}
+
+\begin{problempartsimple}[(c)]
+By definition,
+\[
+Q = \frac{\nu}{\Delta \nu_{1/2}} = \frac{(\SI{3e8}{m/s}) / (\SI{500}{nm})}{\SI{2.5}{MHz}} \approx \num{2.4e8} \tx{.}
+\]
+\end{problempartsimple}
+
+\begin{problempartsimple}[(d)]
+The lifetime is 
+\[
+t_c = \frac{1}{2\pi \Delta \nu_{1/2}} = \frac{1}{2\pi(\SI{2.5}{MHz})} \approx \SI{64}{ns} \tx{.}
+\]
+
+\end{problempartsimple}
+
+\end{problem}
+
+\begin{problem}[Problem 2][Nagourney 3.2] \label{3.2}
+
+\begin{problemstatement}
+Calculate the transmission of the electric field and intensity for a cavity having mirrors with field reflectivity (resp. transmissivity) $r_1, r_2$ ($t_1, t_2$), separation $d$, and containing a medium with transmission $t$.
+\end{problemstatement}
+
+As in the text, let $r_m \coloneqq r_2 t^2$, and let $\delta$ denote the round-trip phase shift through the cavity.  The ``one-pass'' contribution to the electric field just outside the output coupler (i.e., the field ignoring contributions from multiple passes through the cavity) is
+\[
+\vb{E}_1 = (t_1 t t_2) e^{-i \delta / 2} \vb{E}_0 \tx{.}
+\]
+Contributions from subsequent passes acquire factors of $r_1 r_2 t^2 e^{-i \delta} = r_1 r_m e^{-i \delta}$.  Let
+\begin{gather*}
+\alpha \coloneqq t_1 t t_2 e^{-i \delta / 2} \\
+\beta \coloneqq r_1 r_m e^{-i \delta} \tx{.}
+\end{gather*}
+By the above logic, the total field at the output coupler is then
+\begin{align*}
+\vb{E}_t &= \alpha (1 + \beta + \beta^2 + \cdots) \vb{E}_0 \\
+&= \alpha \qty( \frac{1}{1 - \beta} ) \vb{E}_0 \tx{.}
+\end{align*}
+The output intensity is thus
+\begin{align*}
+I_t &= I_0 \qty| \frac{\alpha}{1 - \beta} |^2 \\
+&= I_0 \qty[ \frac{t^2 t_1^2 t_2^2}{(1 - r_1 r_m)^2 + 4 r_1 r_m \sin^2 (\delta / 2)} ]
+\end{align*}
+(the denominator is the same as for the reflected and circulating intensities).
+
+\end{problem}
+
+\begin{problem}[Problem 3][Nagourney 3.3] \label{ring_cavity}
+
+\begin{problemstatement}
+Calculate the FSR, finesse, $Q$, and photon lifetime for a three-mirror ring cavity with $\SI{20}{cm}$ arms and field reflectivities of $r_1 = r_2 = 0.99$, $r_3= 0.98$.  Assume $\lambda = \SI{600}{nm}$.
+\end{problemstatement}
+
+The round-trip optical path length is $\SI{60}{cm}$; hence the FSR is
+\[
+\eff = \frac{c}{\ell} = \frac{\SI{3e8}{m/s}}{\SI{60}{cm}} \approx \SI{500}{MHz} \tx{.}
+\]
+The finesse is approximately given by equation 3.14 from Nagourney:
+\begin{align*}
+\mathcal{F} &\approx \frac{\pi \sqrt{r_1 r_m}}{1 - r_1 r_m} \\
+&= \frac{\pi \sqrt{r_1 r_2 r_3}}{1 - r_1 r_2 r_3} \\
+&\approx 78 \tx{.}
+\end{align*}
+The $Q$-factor at $\lambda = \SI{600}{nm}$ is 
+\[
+Q = \mathcal{F} \qty( \frac{\ell}{\lambda} ) \approx 78 \qty( \frac{\SI{60}{cm}}{\SI{600}{nm}} ) \approx \num{7.8e7} \tx{.}
+\]
+Finally, the photon lifetime is 
+\[
+t_c = \frac{1}{2\pi \Delta \nu_{1/2}} = \frac{\mathcal{F}}{2\pi \eff} \approx \SI{2.5}{ns} \tx{.}
+\]
+
+\end{problem}
+
+
+\end{document}

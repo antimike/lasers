@@ -1,0 +1,250 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage[makeroom]{cancel}
+\usepackage{physics}
+\usepackage{braket}
+\usepackage{bbold}
+\usepackage{tensor}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{mdframed}
+\usepackage{xparse}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[inline]{enumitem}
+\usepackage{wrapfig}
+\usepackage{float}
+
+\geometry{lmargin=.75in, rmargin=.75in}
+
+%% For sample text
+\usepackage{lipsum}
+
+%% Resource-intensive packages
+%\usepackage{chemformula}
+%\usepackage{siunitx}
+%\usepackage[backend=bibtex,style=phys]{biblatex}
+
+%\setlength{\textwidth}{\paperwidth}
+%\addtolength{\textwidth}{-2in}
+%\calclayout
+
+%%Layout environments and macros
+\makeatletter
+\newcounter{problem}
+\newcounter{problempart}
+\newcounter{problemstart}
+\setcounter{problem}{0}
+\setcounter{problemstart}{1}
+\newcommand{\theheadertitle}{}
+\newcommand{\theproblemtitle}{}
+\newcommand{\theproblemsubtitle}{}
+\newcommand{\theproblemformattedtitle}{}
+\newcommand{\theproblempartformattedname}{}
+\newcommand{\theproblempartname}{}
+\newcommand{\theproblemheadertext}{}
+\newcommand{\theproblempage}{\the\numexpr\thepage-\theproblemstart+1\relax}
+
+\NewDocumentEnvironment{problem}{ o o }%
+{
+	\refstepcounter{problem}
+	\setcounter{problemstart}{\thepage}
+	\setcounter{problempart}{0}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblemtitle}{Problem \theproblem}}
+		{\renewcommand{\theproblemtitle}{#1}}	
+	\IfNoValueTF{#2}%
+		{%
+			\renewcommand{\theproblemsubtitle}{}
+			\renewcommand{\theproblemformattedtitle}{\textbf{\theproblemtitle}}%
+		}%
+		{%
+			\renewcommand{\theproblemsubtitle}{#2}
+			\renewcommand{\theproblemformattedtitle}{\textbf{\theproblemtitle} (\theproblemsubtitle)}%
+		}	
+	\renewcommand{\theproblemheadertext}{\theproblemtitle \, -- \, \theproblempage}
+	\protected@edef\@currentlabelname{\theproblemtitle}
+	\noindent \hrule height .5pt width \textwidth
+	\vskip .75em
+	\begin{center}
+		\large{\theproblemformattedtitle}
+	\end{center}
+	\noindent \hrule height .5pt width \textwidth
+	\vskip .75em
+}{	\newpage }
+
+\NewDocumentEnvironment{problemstatement}{ O{Problem Statement} O{\itshape} O{lightgray} }%
+{
+	\begin{mdframed}[backgroundcolor=#3, frametitle={#1}]#2
+}{	\end{mdframed}}
+
+\NewDocumentEnvironment{problempart}{ o tp tb }%
+{
+	\refstepcounter{problempart}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblempartname}{\alph{\theproblempart}}	}%
+		{\renewcommand{\theproblempartname}{#1}	}
+	\IfBooleanTF{#2}
+		{\renewcommand{\theproblempartformattedname}{\textbf{(\theproblempartname)}}}
+		{\renewcommand{\theproblempartformattedname}{\textbf{\theproblempartname}}	}%
+	\IfBooleanTF{#3}
+		{\renewcommand{\theproblempartformattedname}{\fbox{(\theproblempartformattedname)}	}}%
+		{ }
+	\theproblempartformattedname
+}{}
+\providecommand{\problempartautorefname}{Part}
+
+\NewDocumentEnvironment{problempartsimple}{ o }
+{
+	\refstepcounter{problempart}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblempartname}{(\alph{problempart})}	}%
+		{\renewcommand{\theproblempartname}{#1}	}
+	\renewcommand{\theproblempartformattedname}{\fbox{\large{\textbf{\theproblempartname}}}}
+	\vspace{1em}
+	\theproblempartformattedname \quad
+}
+
+\NewDocumentEnvironment{problempartsimple*}{ o }
+{
+	\refstepcounter{problempart}
+	\IfNoValueTF{#1}%
+		{\renewcommand{\theproblempartname}{(\alph{\theproblempart})}	}%
+		{\renewcommand{\theproblempartname}{#1}	}
+	\renewcommand{\theproblempartformattedname}{\large{\textbf{\theproblempartname}}}
+	\theproblempartformattedname \quad
+}
+\makeatother
+
+\newcommand{\headertitle}[1]{\renewcommand{\theheadertitle}{#1}}
+\numberwithin{equation}{problem}
+
+\pretitle{% add some rules
+  \begin{center}
+    \Large\bfseries
+}
+\posttitle{%
+  \end{center}%
+%  \noindent\vrule height 2.5pt width \textwidth
+}
+\preauthor{%
+  \begin{center}
+  \begin{tabular}[t]{@{}l@{}}%
+}
+\postauthor{%
+    \end{tabular}
+    \vskip -.5em
+    \par
+  \end{center}%
+}
+\predate{%
+  \begin{center}
+}
+\postdate{%
+  \end{center}%
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhf[lf]{\thedate{}}
+\fancyhf[rf]{\thepage}
+\fancyhf[lh]{\theheadertitle}
+\fancyhf[ch]{\theproblemheadertext}
+\fancyhf[rh]{\theauthor}
+\setlength{\footskip}{30pt}
+\renewcommand{\footrulewidth}{.4pt}
+\renewcommand{\footrule}{\hrule height \footrulewidth width \textwidth}
+
+%% Referencing and layout macros
+\newcommand{\eqnref}[1]{(\ref{#1})}
+\newcommand{\eqnremark}[1]{\textnormal{(#1)}}
+\newcommand{\nn}{\nonumber \\}
+
+%% Spacing / text style macros
+\newcommand{\tallphantom}{\phantom{\left( \int \dfrac{p_i^2}{2m} \right)}}
+\newcommand{\tx}[1]{\textnormal{#1}}
+\newcommand{\lqq}[1]{\quad \textnormal{#1}}
+\newcommand{\byeqnqq}[1]{\qquad \tx{(by } \eqnref{#1} \tx{)}}
+\newcommand{\byeqn}[1]{\tx{(by } \eqnref{#1} \tx{)}}
+\newcommand{\spacedimplies}{\Longrightarrow \quad}
+\newcommand{\ds}{\displaystyle}
+
+%% Physics macros
+\newcommand{\cvec}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\dprime}{\prime \prime}
+\newcommand{\til}[1]{\widetilde{#1}}
+
+%% Theorem environments
+\newtheorem{theorem}{Theorem}[problem]
+\providecommand{\theoremautorefname}{Theorem}
+\newtheorem{proposition}{Proposition}[problem]
+\providecommand{\propositionautorefname}{Proposition}
+\newtheorem{corollary}{Corollary}[proposition]
+\providecommand{\corollaryautorefname}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[problem]
+\providecommand{\definitionautorefname}{Definition}
+\newtheorem{example}{Example}[problem]
+\providecommand{\exampleautorefname}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[problem]
+\providecommand{\remarkautorefname}{Remark}
+\newtheorem*{note}{Note}
+
+\providecommand{\includegraphicsautorefname}{Figure}
+\providecommand{\figureautorefname}{Figure}
+
+\providecommand{\problemautorefname}{Problem}
+\providecommand{\problempartsimpleautorefname}{Part}
+%\providecommand{\problempartsimple*autorefname}{Part}
+
+
+\begin{document}
+\author{Michael Haynes}
+\title{Quantum Mechanics: Assignment 6}
+\headertitle{HW 8}
+\date{12/13/2019}
+\titlepage
+\maketitle
+
+\newpage
+\begin{problem}[Problem 1] \label{ABCD_Problem}
+
+\begin{problemstatement}
+
+(10 points) One of the first things we learn in optics is that a lens of focal length f will focus a collimated laser beam a distance f away from the lens. However, Gaussian
+beam optics shows that this is actually only valid given certain approximations. Use
+ABCD matrices to find the necessary constraints on the focal length of the lens and
+the incoming laser beam necessary for this familiar rule to be applicable.
+
+\end{problemstatement}
+
+%\begin{problempartsimple}[(a)]
+%
+%\end{problempartsimple}
+%
+%\begin{problempartsimple}[(b)]
+%
+%\end{problempartsimple}
+
+The $ABCD$ matrix for a thin lens of focal length $f$ is 
+\begin{equation} \label{lens_matrix_defn}
+M_f \coloneqq \mqty(1 & 0 \\ -1/f & 1)
+\end{equation}
+
+
+
+\end{problem}
+
+
+
+
+
+
+\end{document}

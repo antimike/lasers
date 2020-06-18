@@ -12,7 +12,10 @@ sheet_results = dict(zip(sheet_names, sheet_zs)) # This will be mutated to hold 
 y_col_labels = ['Power ' + str(i) for i in np.arange(1, 6, 1)] # 5 different measurements per data point
 col_labels = ['Micrometer reading', *y_col_labels]
 
-raw_data = importer.get_data_from_workbook(filename, col_labels)
+raw_data = importer.get_data_from_workbook(
+    filename,
+    {sheet_name: col_labels for sheet_name in sheet_names}
+)
 data = {sheet_name: get_plotdata(sheet_dict) for sheet_name, sheet_dict in raw_data.items()}
 
 def get_plotdata(col_dict):
@@ -30,5 +33,5 @@ sheet_results = {
     for name, z in sheet_results.items()
 }
 
-plotter.initialize_figure('Beam Waist Measurements at Different $z$-values',
-    xlabel)
+plotter.initialize_figure(title='Beam Waist Measurements at Different $z$-values',
+    xlabel='')

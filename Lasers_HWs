@@ -1,0 +1,54 @@
+~~Lasers assignments
+
+------------------------------------------------------
+
+HW 4:
+3.1 - 3.4
+
+------------------------------------------------------
+
+HW 5: 
+
+Consider equations 5.22 in your book.  Notice that these two equations can be considered as a single equation where the derivative of a vector is equal to a matrix times that same vector. 
+
+ 
+
+    Notice that if you multiply both sides of the equation by hbar, this equation looks a lot like the Schroedinger equation. What is the effective Hamiltonian in this case?
+    In the case of the true Schroedinger equation, diagonalizing the Hamiltonian to find the eigenvalues gives you the energies of the levels. Please diagonalize the effective Hamiltonian from part a).  In the limit of zero laser intensity, you might expect to recover the energies of the two unperturbed energy levels.  However, in this case you do not. Please explain this result by looking back at our derivation of equations 5.22.  What is the physical interpretation of the eigenenergies you found?
+    Please approximate your result by assuming that the detuning is much larger that the Rabi frequency. You should find a simple result for the shifts of the energy levels. Signs get confusing here but as it turns out the lower energy level will be shifted down when the detuning is negative.
+    Consider a Rb87 atom in its ground state moving at 1 cm/s (very cold!) at the center of a 1 mW laser beam collimated to w = 1 mm. The atom is moving transverse to the direction of laser propagation.  The laser frequency has a detuning of -5 GHz from the resonance of a dipole allowed transition.  Do you expect this atom to be trapped within the laser beam or can it escape?  Notice that I did not give you a number for the dipole moment of the transition (or even the transition!).  Since you need this for the calculation please use a reasonable estimate.
+
+--------------------------------------------------------
+
+HW 6:
+5.1, 5.3
+
+Problem 3:
+
+a) The 3s-3p resonance line in sodium has a wavelength of 589 nm.  Imagine sodium atoms in a spherical cloud with a 1 mm diameter.  The linewidth is dominated by the natural linewidth.  Calculate the number of atoms that give a transmission of 0.37 (1/e) for a weak resonant laser beam.
+
+b) Determine the absorption of a beam with an intensity of I=Isat.
+
+--------------------------------------------------------
+
+HW 7:
+6.1 - 6.6 [~6.3]
+
+--------------------------------------------------------
+
+HW 9: 
+4.1 - 4.4
+
+--------------------------------------------------------
+
+Prob 1: Please prove equations 11.4 and 11.6
+
+Prob 2: Nagourney 11.1
+
+Prob 3: Nagourney 11.2
+
+
+
+
+
+
